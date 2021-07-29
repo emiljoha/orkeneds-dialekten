@@ -1,1 +1,0 @@
-2021/07/28 21:57:16 [error] 365#365: *1 directory index of "/config/www/" is forbidden, client: 10.0.2.100, server: _, request: "GET / HTTP/1.1", host: "localhost:8080"
