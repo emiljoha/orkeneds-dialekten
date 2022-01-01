@@ -5,55 +5,7 @@
   <body>
     Sök efter ord
     <input type="text" id="fname" name="fname"><br>
-    <table>
-      <tr>
-        <td>
-          Dialektord:
-        </td>
-        <td>
-          Rikssvenska:
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="row-1-dialekt"></p>
-        </td>
-        <td>
-          <p id="row-1-riks"></p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="row-2-dialekt"></p>
-        </td>
-        <td>
-          <p id="row-2-riks"></p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="row-3-dialekt"></p>
-        </td>
-        <td>
-          <p id="row-3-riks"></p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="row-4-dialekt"></p>
-        </td>
-        <td>
-          <p id="row-4-riks"></p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="row-5-dialekt"></p>
-        </td>
-        <td>
-          <p id="row-5-riks"></p>
-        </td>
-      </tr>
+    <table id="dialektord-result-table">
     </table>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.5.3"></script>
     <script>
@@ -6074,15 +6026,21 @@
 
       const fuse = new Fuse(ord, options);
 
-      
       function handleInput(e) {
-          // Change the pattern
-          const pattern = "jö"
-
           const res = fuse.search(e.target.value, {limit: 5})
+          var table = document.getElementById("dialektord-result-table")
+          table.innerHTML = ""
+          var row = table.insertRow(0)
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          cell1.innerHTML = "Dialektord"
+          cell2.innerHTML = "Rikssvenska";
           for (var i = 0; i < res.length; i++) {
-              document.getElementById("row-" + (i + 1) + "-dialekt").textContent = res[i].item.dialekt;
-              document.getElementById("row-" + (i + 1) + "-riks").textContent = res[i].item.riks;
+              var row = table.insertRow(i+1)
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = res[i].item.dialekt;
+              cell2.innerHTML = res[i].item.riks;
           }
       }
       input.oninput = handleInput;
