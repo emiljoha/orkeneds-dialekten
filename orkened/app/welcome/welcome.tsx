@@ -1,9 +1,9 @@
 import logo from "./namn.webp";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { useState } from 'react'
-import { words } from "./ord"
+import { words, Word} from "./ord"
 import uttryck from "./uttryck"
-import Fuse from 'fuse.js'
+import Fuse, {FuseResult} from 'fuse.js'
 
 
 const options = {
@@ -28,7 +28,7 @@ const options = {
 const fuse = new Fuse(words, options);
 
 export function Welcome() {
-    const [selectedWord, setSelectedWord] = useState()
+    const [selectedWord, setSelectedWord] = useState<FuseResult<Word>>()
     const [query, setQuery] = useState('')
 
     const filteredWords = fuse.search(query, {limit: 5})
@@ -40,8 +40,8 @@ export function Welcome() {
 		    <div className="w-[300px] max-w-[100vw] p-4">
 			<img
 			    src={logo}
-			    alt="Örkeneds Dialekten"
-			    className="block w-full"
+				alt="Örkeneds Dialekten"
+				className="block w-full"
 			/>
 		    </div>
 		</header>
@@ -49,8 +49,8 @@ export function Welcome() {
 		<div className="max-w-[300px] w-full space-y-6 px-4">
 		    <Combobox onChange={setSelectedWord} onClose={() => setQuery('')}>
 			<ComboboxInput
-			    className="border border-black" aria-label="Ord"
-			    onChange={(event) => setQuery(event.target.value)}	      
+			    className="border border-black" aria-label="Ord" displayValue={(word: any) => word.item.riks}
+			    onChange={(event) => setQuery(event.target.value)}
 			/>	  
 			<ComboboxOptions anchor="bottom" className="border">
 			    {filteredWords.map((word) => (
@@ -59,9 +59,24 @@ export function Welcome() {
 				</ComboboxOption>
 			    ))}
 			</ComboboxOptions>
-		    </Combobox>
+		    </Combobox>		    
+		</div>
+		<div className="max-w-[300px] w-full space-y-6 px-4">
+		    <div className="flex flex-row gap-x-16">
+			<div>
+			    {selectedWord?.item.riks}
+			</div>
+			<div>
+			    {selectedWord?.item.dialekt}
+			</div>
+  		    </div>
+		    <div>
+			<audio controls>
+			    <source src={selectedWord?.item.audio} type="audio/wav"/>
+			</audio>
+		    </div>
 		</div>
 	    </div>
 	</main>
     );
-}
+			}
